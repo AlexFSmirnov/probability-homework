@@ -12,6 +12,17 @@ step_num    = 1;
 
 // Algorithm stuff
 function approx_step() {
+    // Some safety
+    var safe = !(!b || !m || !c || !n);
+    if (!with_return && n > (b + m + c)) safe = false;
+    if (!safe) {
+        alert("Invalid input variables!");
+        if (approx_on) {
+            toggle_approx();
+        }
+        return;
+    }
+
     var red_picked = 0;
 
     // Current permutation of balls in the urn
@@ -58,6 +69,27 @@ function approx_step() {
         setTimeout(approx_step, 10);
     }
 }
+
+// Returns real probabilities based on a formula
+function get_real_probs() {
+    real_probs = {};
+
+    for (var i = 0; i <= n; i++) {
+        real_probs[i] = get_prob_k(i);
+    }
+
+    return real_probs;
+}
+
+// Probability that exactly k balls were choosen
+function get_prob_k(k) {
+    if (with_return) {
+        return choose(n, k) * Math.pow(c / (b + m + c), k) * Math.pow((b + m) / (b + m + c), n - k);
+    } else {
+
+    }
+}
+
 
 // Bar plots 
 function plot(id, data, title) {
@@ -121,9 +153,36 @@ function data_from_approx(probs, steps) {
     return data;
 }
 
+function data_from_real(probs) {
+    var data = [{x: [], 
+                 y: [],
+                 marker: {color: []},
+                 type: 'bar'}];
+
+    for (var i = 0; i <= n; i++) {
+        data[0].x.push(i);
+        data[0].y.push(probs[i]);
+        data[0].marker.color.push("cyan");
+    }
+
+    return data;
+}
+
 // JS stuff
 function randint(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function factorial(n) {
+    if (n == 0) {
+        return 1;
+    } 
+    return n * factorial(n - 1);
+}
+
+function choose(n, k) {
+    if (k > n) return 0;
+    return factorial(n) / (factorial(k) * factorial(n - k));
 }
 
 function setup() {
@@ -135,10 +194,11 @@ function setup() {
     main.style.marginLeft = sidebar.offsetWidth + "px";
 
     // Setting the plot layout width and height
-    for (var plot in plots) {
-        plot.width = main.offsetHeight * 0.4;
-        plot.height = main.offsetHeight * 0.4;
+    for (var i = 0; i < 2; i++) {
+        plots[i].style.width = (sidebar.offsetHeight - 50) / 2 + "px";
+        plots[i].style.height = (sidebar.offsetHeight - 50) / 2 + "px";
     }
+    plots[0].style.marginBottom = "10px";
 
     // Writing default values 
     for (var i = 0; i < 4; i++) {
@@ -162,11 +222,6 @@ function toggle_approx() {
     var btn = document.getElementById("start");
     approx_on = !approx_on;
     if (approx_on) {
-        if (!b || !m || !c || !n) {
-            alert("Invalid input values!");
-            return;
-        }
-
         btn.innerHTML = "Stop random approximation";
         approx_step();
     } else {
@@ -187,6 +242,7 @@ function update_globals() {
     }
 
     plot("approx-plot", data_from_approx(cur_probs, 1), "Approximated probabilities");
+    plot("real-plot", data_from_real(get_real_probs()), "Real probabilities");
 
     if (approx_on) {
         toggle_approx();

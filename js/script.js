@@ -13,7 +13,7 @@ step_num    = 1;
 // Algorithm stuff
 function approx_step() {
     // Some safety
-    var safe = !(!b || !m || !c || !n);
+    var safe = (b || m || c) && n;
     if (!with_return && n > (b + m + c)) safe = false;
     if (!safe) {
         alert("Invalid input variables!");
@@ -75,18 +75,51 @@ function get_real_probs() {
     real_probs = {};
 
     for (var i = 0; i <= n; i++) {
-        real_probs[i] = get_prob_k(i);
+        if (with_return) {
+            real_probs[i] = get_prob_k_return(i);
+        } else {
+            real_probs[i] = get_prob_k_no_return(i);
+        }
     }
 
     return real_probs;
 }
 
 // Probability that exactly k balls were choosen
-function get_prob_k(k) {
-    if (with_return) {
-        return choose(n, k) * Math.pow(c / (b + m + c), k) * Math.pow((b + m) / (b + m + c), n - k);
-    } else {
+function get_prob_k_return(k) {
+    return choose(n, k) * Math.pow(c / (b + m + c), k) * Math.pow((b + m) / (b + m + c), n - k);
+}
+function get_prob_k_no_return(k) {
+    tmp_prob = 0;
+    gen(n, k, []);
+    return tmp_prob;
+}
 
+tmp_prob = 0;
+function gen(n, k, prefix) {
+    if (prefix.length == n) {
+        var step_prob = 1;
+        var red_met = 0;
+        for (var i = 0; i < n; i++) {
+            if (prefix[i] == 1) {
+                step_prob *= ((c - red_met) / (b + m + c - i));
+                red_met += 1;
+            } else {
+                step_prob *= ((b + m - (i - red_met)) / (b + m + c - i));
+            }
+        }
+        tmp_prob += step_prob;
+        return;
+    }
+    if (k > 0) {
+        prefix.push(1);
+        gen(n, k - 1, prefix);
+        prefix.pop();
+    } 
+    if (prefix.length < n - k) {
+        prefix.push(0);
+        gen(n, k, prefix);
+        prefix.pop();
     }
 }
 
@@ -100,8 +133,7 @@ function plot(id, data, title) {
             r: 30,
             t: 50,
             b: 30,
-        },
-        yaxis: {
+        }, yaxis: {
             title: "Probability",
             titlefont: {
                 color: '#aaa',
@@ -194,9 +226,10 @@ function setup() {
     main.style.marginLeft = sidebar.offsetWidth + "px";
 
     // Setting the plot layout width and height
+    var side = (sidebar.offsetHeight - 50) / 2 + "px";
     for (var i = 0; i < 2; i++) {
-        plots[i].style.width = (sidebar.offsetHeight - 50) / 2 + "px";
-        plots[i].style.height = (sidebar.offsetHeight - 50) / 2 + "px";
+        plots[i].style.width = side;
+        plots[i].style.height = side;
     }
     plots[0].style.marginBottom = "10px";
 

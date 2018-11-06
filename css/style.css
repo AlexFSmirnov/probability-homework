@@ -1,0 +1,173 @@
+/* The sidebar menu */
+.sidenav {
+    height: 100%;
+    position: fixed;         /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;              /* Stay on top */
+    top: 0;                  /* Stay at the top */
+    left: 0;
+
+    background-color: #111; 
+    overflow-x: hidden;      /* Disable horizontal scroll */
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+
+    box-shadow: 4px 0 8px 0 rgba(0, 0, 0, 0.4), 6px 0 20px 0 rgba(0, 0, 0, 0.39);
+}
+
+/* Style page content */
+.main {
+    padding: 0px 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/* Sidebar input style */
+.side-input {
+    font-family: "Mina";
+    font-size: 18px;
+    text-align: center;
+    color: #aaa;
+
+    border: none;
+    border-bottom: 2px solid #aaa;
+    background-color: #111;
+
+    width: 50px;
+}
+
+.side-input:hover, .side-input:focus {
+    border-bottom: 2px solid #ffa500;
+    outline-width: 0;
+}
+
+/* Sidebar button style */
+.side-button {
+    font-family: "Mina";
+    font-size: 18px;
+    text-align: center;
+    color: #aaa;
+
+    background-color: #111;
+    display: block;
+    width: 100%;
+
+    outline-width: 0;
+
+    border-radius: 5px;
+}
+.side-button:hover {
+    background-color: #ffa500;
+    color: #111;
+}
+
+
+/* Styles for sidebar table */
+.divTable {
+    display: table;
+    width: 100%;
+}
+.divTableRow {
+    display: table-row;
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+}
+.divTableCell, .divTableHead {
+    /*border: 1px solid #999999;*/
+    display: table-cell;
+    padding: 3px 10px;
+
+    font-family: "Mina";
+    font-size: 18px;
+    color: #aaa;
+
+}
+.divTableHeading {
+    background-color: #EEE;
+    display: table-header-group;
+    font-weight: bold;
+}
+.divTableFoot {
+    background-color: #EEE;
+    display: table-footer-group;
+    font-weight: bold;
+}
+.divTableBody {
+    display: table-row-group;
+}
+
+
+/* Checkbox style */
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #aaa;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #bbb;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #ffa500;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

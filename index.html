@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Probability 3.1 Homework</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Mina" rel="stylesheet">
+    <script src="js/script.js"></script>
+    <script src="js/plotly-latest.min.js"></script>
+</head>
+
+<body onload="setup();">
+    <div class="sidenav">
+        <div class="divTable">
+        <div class="divTableBody">
+
+            <!--Amount of balls of each color and how many to pick-->
+            <div class="divTableRow">
+                <div class="divTableCell">
+                    <font color="white">White</font> balls <font color="#ffa500">(b)</font>
+                </div>
+                <div class="divTableCell"><input class="side-input" id="b" autocomplete="off"></div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">
+                    <font color="blue">Blue</font> balls <font color="#ffa500">(m)</font>
+                </div>
+                <div class="divTableCell"><input class="side-input" id="m" autocomplete="off"></div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">
+                    <font color="red">Red</font> balls <font color="#ffa500">(c)</font>
+                </div>
+                <div class="divTableCell"><input class="side-input" id="c" autocomplete="off"></div>
+            </div>
+            <div class="divTableRow">
+                <div class="divTableCell">Balls to choose <font color="#ffa500">(n)</font></div>
+                <div class="divTableCell"><input class="side-input" id="n" autocomplete="off"></div>
+            </div>
+
+            <!--Do we return the balls after picking them?-->
+            <div class="divTableRow">
+                <div class="divTableCell">With returning</div>
+                <div class="divTableCell">
+                    <label class="container">
+                        <input type="checkbox" checked="checked">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        </br></br>
+
+        <!--"Pick a ball" button-->
+        <button class="side-button" id="pick"> Pick a ball </button>
+        </br>
+
+        <!--"Start random approximation" button-->
+        <button class="side-button" id="start"> Start random </button>
+
+    </div>
+
+    <div class="main">
+
+    </div>
+</body>
+</html>  
+

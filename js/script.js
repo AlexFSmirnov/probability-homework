@@ -7,7 +7,7 @@ with_return = true;
 cur_balls   = [];
 cur_probs   = {};
 approx_on   = false;
-step_num    = 0;
+step_num    = 1;
 
 
 // Algorithm stuff
@@ -48,6 +48,10 @@ function approx_step() {
         cur_probs[red_picked] = 1;
     }
 
+    // Redrawing the plot
+    plot("approx-plot", 
+         data_from_approx(cur_probs, step_num), 
+         "Approximated probabilities");
 
     step_num += 1;
     if (approx_on) {
@@ -55,6 +59,67 @@ function approx_step() {
     }
 }
 
+// Bar plots 
+function plot(id, data, title) {
+    var layout = {
+        autosize: true,
+        margin: {
+            l: 30,
+            r: 30,
+            t: 50,
+            b: 30,
+        },
+        yaxis: {
+            title: "Probability",
+            titlefont: {
+                color: '#aaa',
+                family: 'Mina'
+            },
+            automargin: true
+        },
+        xaxis: {
+            title: "#Red balls",
+            titlefont: {
+                color: '#aaa',
+                family: 'Mina'
+            },
+            ticktext: [],
+            tickvals: [],
+            tickmode: 'array',
+            automargin: true
+        },
+        title: title,
+        titlefont: {
+            color: '#aaa',
+            family: 'Mina'
+        },
+        paper_bgcolor: "#111",
+        plot_bgcolor: "#111"
+    };
+
+    for (var i = 0; i <= n; i++) {
+        layout.xaxis.ticktext.push(i);
+        layout.xaxis.tickvals.push(i);
+    }
+
+    Plotly.newPlot(id, data, layout);
+}
+
+function data_from_approx(probs, steps) {
+    // Specific data format for Plotly
+    var data = [{x: [], 
+                 y: [],
+                 marker: {color: []},
+                 type: 'bar'}];
+
+    for (var i = 0; i <= n; i++) {
+        data[0].x.push(i);
+        data[0].y.push(probs[i] / steps);
+        data[0].marker.color.push("#ffa500");
+    }
+
+    return data;
+}
 
 // JS stuff
 function randint(min, max) {
@@ -64,9 +129,16 @@ function randint(min, max) {
 function setup() {
     var main    = document.getElementsByClassName("main")[0];
     var sidebar = document.getElementsByClassName("sidenav")[0];
+    var plots   = document.getElementsByClassName("plot");
 
     // Setting the main margin to that content doesn't overlap with the sidebar 
     main.style.marginLeft = sidebar.offsetWidth + "px";
+
+    // Setting the plot layout width and height
+    for (var plot in plots) {
+        plot.width = main.offsetHeight * 0.4;
+        plot.height = main.offsetHeight * 0.4;
+    }
 
     // Writing default values 
     for (var i = 0; i < 4; i++) {
@@ -109,17 +181,16 @@ function update_globals() {
     n = parseInt(document.getElementById("n").value);
     with_return = document.getElementById("with-returning").checked;
 
-    // When we know the balls are not returned to the urn,
-    // predefine all possible probabilities as zeros. Otherwise, we
-    // can get any result, so the probabilities will be counted later.
     cur_probs = {};
-    if (!with_return) {
-        for (var i = 0; i <= c; i++) {
-            cur_probs[i] = 0;
-        }
+    for (var i = 0; i <= n; i++) {
+        cur_probs[i] = 0;
     }
 
-    approx_on = false;
-    step_num = 0;
+    plot("approx-plot", data_from_approx(cur_probs, 1), "Approximated probabilities");
+
+    if (approx_on) {
+        toggle_approx();
+    }
+    step_num = 1;
 }
 

@@ -2,6 +2,16 @@ body {
     background-color: #444;
 }
 
+/* Plot window */
+.plot {
+    width: 500px;
+    height: 500px;
+    display: block;
+
+    background-color: #111;
+    box-shadow: 4px 4px 8px 8px rgba(0, 0, 0, 0.2), 6px 6px 20px 20px rgba(0, 0, 0, 0.19);
+}
+
 /* The sidebar menu */
 .sidenav {
     height: 100%;
